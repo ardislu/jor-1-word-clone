@@ -1,11 +1,22 @@
 import React from "react";
 
+import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
+
 function GuessInput({ guesses, setGuesses }) {
+  const [guessIndex, setGuessIndex] = React.useState(0);
   const [pendingGuess, setPendingGuess] = React.useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    setGuesses([...guesses, pendingGuess]);
+
+    if (guessIndex + 1 > NUM_OF_GUESSES_ALLOWED) {
+      return;
+    }
+
+    const nextGuesses = structuredClone(guesses);
+    nextGuesses[guessIndex] = pendingGuess;
+    setGuesses(nextGuesses);
+    setGuessIndex(guessIndex + 1);
     setPendingGuess('');
   }
 
