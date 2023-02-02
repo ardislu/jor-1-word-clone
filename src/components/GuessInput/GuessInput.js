@@ -1,12 +1,12 @@
 import React from "react";
 
 function GuessInput({ guesses, setGuesses }) {
-  const [guess, setGuess] = React.useState('');
+  const [pendingGuess, setPendingGuess] = React.useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-    setGuesses([...guesses, guess]);
-    setGuess('');
+    setGuesses([...guesses, pendingGuess]);
+    setPendingGuess('');
   }
 
   return (
@@ -19,8 +19,8 @@ function GuessInput({ guesses, setGuesses }) {
         minLength={5}
         maxLength={5}
         pattern=".{5}"
-        value={guess}
-        onChange={e => setGuess(e.target.value.toLocaleUpperCase())}
+        value={pendingGuess}
+        onChange={e => setPendingGuess(e.target.value.toLocaleUpperCase())}
       />
     </form>
   );
