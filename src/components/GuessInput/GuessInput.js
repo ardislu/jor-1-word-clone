@@ -2,22 +2,26 @@ import React from "react";
 
 import { NUM_OF_GUESSES_ALLOWED } from "../../constants";
 
-function GuessInput({ guesses, setGuesses }) {
-  const [guessIndex, setGuessIndex] = React.useState(0);
+function GuessInput({ guesses, setGuesses, guessIndex, setGuessIndex, answer, inProgress, setInProgress, setWin }) {
   const [pendingGuess, setPendingGuess] = React.useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    if (guessIndex + 1 > NUM_OF_GUESSES_ALLOWED) {
-      return;
-    }
 
     const nextGuesses = structuredClone(guesses);
     nextGuesses[guessIndex] = pendingGuess;
     setGuesses(nextGuesses);
     setGuessIndex(guessIndex + 1);
     setPendingGuess('');
+    
+    if (pendingGuess === answer) {
+      setInProgress(false);
+      setWin(true);
+    }
+    else if (guessIndex + 2 > NUM_OF_GUESSES_ALLOWED) {
+      setInProgress(false);
+      setWin(false);
+    }
   }
 
   return (
@@ -32,6 +36,7 @@ function GuessInput({ guesses, setGuesses }) {
         pattern=".{5}"
         value={pendingGuess}
         onChange={e => setPendingGuess(e.target.value.toLocaleUpperCase())}
+        disabled={!inProgress}
       />
     </form>
   );
